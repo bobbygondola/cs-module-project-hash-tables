@@ -8,6 +8,8 @@ def hash_function(s):
     
     for b in bytes_list:
         total += b
+        # optional but correct 
+        total &= 0xffffffff # 32 bit ( 8 f's )
     
     return total
 
