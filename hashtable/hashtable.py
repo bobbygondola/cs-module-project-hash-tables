@@ -7,7 +7,6 @@ class HashTableEntry:
         self.value = value
         self.next = None
 
-
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
 
@@ -51,14 +50,14 @@ class HashTable:
         return load_factor
 
 
-    def fnv1(self, key):
-        """
-        FNV-1 Hash, 64-bit
+    # def fnv1(self, key):
+    #     """
+    #     FNV-1 Hash, 64-bit
 
-        Implement this, and/or DJB2.
-        """
+    #     Implement this, and/or DJB2.
+    #     """
 
-        # Your code here
+    #     # Your code here
 
 
     def djb2(self, key):
