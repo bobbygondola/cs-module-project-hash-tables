@@ -10,7 +10,6 @@ class HashTableEntry:
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
 
-
 class HashTable:
     """
     A hash table that with `capacity` buckets
@@ -18,11 +17,13 @@ class HashTable:
 
     Implement this.
     """
+    
+    def LinkedList(self):
+        self.head = None
 
     def __init__(self, capacity):
         self.capacity = MIN_CAPACITY
-        self.hash_data = [None] * MIN_CAPACITY
-        
+        self.hash_data = [LinkedList()] * MIN_CAPACITY
 
 
     def get_num_slots(self):
@@ -121,8 +122,10 @@ class HashTable:
 
         Implement this.
         """
-        return self.hash_data[self.hash_index(key)]
-
+        # return self.hash_data[self.hash_index(key)]
+        current = self.head
+        # loop through, find value, return it
+        
 
     def resize(self, new_capacity):
         """
@@ -131,7 +134,12 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # When load factor increases above 0.7, automatically rehash the table to double its previous size.
+        # Add the resize() method.
+        # You can test this with both of:
+        # python test_hashtable.py
+        # python test_hashtable_resize.py
+        # Stretch: When load factor decreases below 0.2, automatically rehash the table to half its previous size, down to a minimum of 8 slots.
 
 
 
