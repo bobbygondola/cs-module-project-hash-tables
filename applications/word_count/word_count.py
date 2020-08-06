@@ -6,6 +6,7 @@ def word_count(s):
 
         if i not in d:
             d[i] = 0
+            print(f"This is the object growing, {d}")
         d[i] += 1
     
     return d
@@ -13,7 +14,7 @@ def word_count(s):
 
 
 if __name__ == "__main__":
-    print(word_count(""))
-    print(word_count("Hello"))
-    print(word_count('Hello, poz my cat. And poz my cat doesn\'t say "hello" back.'))
-    print(word_count('poz poz poz poz poz This is a test of the emergency broadcast network. This is only a test.'))
+    # print(word_count(""))
+    # print(word_count("Hello"))
+    print(word_count('Hello, my cat. And my cat doesn\'t say "hello" back.'))
+    # print(word_count('poz poz poz poz poz This is a test of the emergency broadcast network. This is only a test.'))
