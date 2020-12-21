@@ -1,3 +1,4 @@
+  
 class HashTableEntry:
     """
     Linked List hash table key/value pair
@@ -6,63 +7,62 @@ class HashTableEntry:
         self.key = key
         self.value = value
         self.next = None
+    
+    def set_next(self, new_next):
+        self.next = new_next
 
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
+
+class LinkedList:
+    def __init__(self, head=None):
+        self.head = head
+
+    def add_to_head(self, value):
+        value.next = self.head
+        self.head = value
 
 
 class HashTable:
     """
     A hash table that with `capacity` buckets
     that accepts string keys
-
     Implement this.
     """
 
-    def __init__(self, capacity):
-        # Your code here
-
+    def __init__(self, capacity=MIN_CAPACITY):
+        self.capacity = capacity
+        self.size = 0
+        self.hash = [LinkedList()] * self.capacity
+    #   [[], []]
 
     def get_num_slots(self):
-        """
-        Return the length of the list you're using to hold the hash
-        table data. (Not the number of items stored in the hash table,
-        but the number of slots in the main list.)
-
-        One of the tests relies on this.
-
-        Implement this.
-        """
-        # Your code here
+        return self.capacity
 
 
     def get_load_factor(self):
-        """
-        Return the load factor for this hash table.
-
-        Implement this.
-        """
-        # Your code here
-
-
+        return self.size / self.capacity
+        
     def fnv1(self, key):
         """
         FNV-1 Hash, 64-bit
-
         Implement this, and/or DJB2.
         """
+        hash = 14695981039346656037
+        bytes_representation = key.encode()
 
-        # Your code here
+        for byte_of_data in bytes_representation:
+            hash *= 1099511628211
+            hash = hash ^ byte_of_data
+        return hash
 
-
-    def djb2(self, key):
-        """
-        DJB2 hash, 32-bit
-
-        Implement this, and/or FNV-1.
-        """
-        # Your code here
+    # def djb2(self, key):
+    #     """
+    #     DJB2 hash, 32-bit
+    #     Implement this, and/or FNV-1.
+    #     """
+    #     # Your code here
 
 
     def hash_index(self, key):
@@ -70,52 +70,56 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        # return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
         Store the value with the given key.
-
         Hash collisions should be handled with Linked List Chaining.
-
         Implement this.
         """
-        # Your code here
+        # Beej mentioned keep increment counter for size. do i put
+        # size += 1 under each pos.key if statement
+        index = self.hash_index(key)
+        cur = self.hash[index].head
+        
+        while cur:
+            if cur.key == key:
+                cur.value = value
+            cur = cur.next
+        
+        new_entry = HashTableEntry(key, value)
+        self.hash[index].add_to_head(new_entry)
+        self.size += 1
 
 
     def delete(self, key):
-        """
-        Remove the value stored with the given key.
-
-        Print a warning if the key is not found.
-
-        Implement this.
-        """
-        # Your code here
+        self.put(key, None)
+        self.size -= 1
 
 
     def get(self, key):
-        """
-        Retrieve the value stored with the given key.
+        index = self.hash_index(key)
+        cur = self.hash[index].head
 
-        Returns None if the key is not found.
-
-        Implement this.
-        """
-        # Your code here
+        while cur:
+            if cur.key == key:
+                return cur.value
+            cur = cur.next
+        return None
 
 
     def resize(self, new_capacity):
-        """
-        Changes the capacity of the hash table and
-        rehashes all key/value pairs.
-
-        Implement this.
-        """
-        # Your code here
-
-
+        if self.get_load_factor() >= 0.7:
+            old_hash = self.hash
+            self.hash = [LinkedList()] * new_capacity
+            for i in old_hash:
+                cur = i.head
+                while cur:
+                    self.put(cur.key, cur.value)
+                    cur = cur.next
+                self.capacity = new_capacity
 
 if __name__ == "__main__":
     ht = HashTable(8)
